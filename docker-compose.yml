@@ -1,0 +1,25 @@
+version: "3.5"
+services:
+  app:
+    build: .
+    container_name: react-cm
+    restart: unless-stopped
+    volumes:
+      - ./:/app_crm
+    working_dir: /app_crm
+    environment:
+      DB_HOST: json-server
+      SERVICE_NAME: app
+    ports:
+      - 5173:5173
+    stdin_open: true
+    command: npm run dev
+    tty: true
+  json-server:
+    build: ./db
+    container_name: json-server-container
+    ports:
+      - 3000:3000
+    volumes:
+      - ./db/db.json:/data/db.json
+    command: json-server --watch /data/db.json --host 0.0.0.0
